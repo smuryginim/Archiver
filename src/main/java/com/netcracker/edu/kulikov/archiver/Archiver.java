@@ -1,7 +1,8 @@
 package com.netcracker.edu.kulikov.archiver;
 
+import com.netcracker.edu.kulikov.parsingcmd.SettingsArchiver;
+
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -11,42 +12,19 @@ import java.util.List;
  */
 public interface Archiver {
 
-    /**
-     * упаковывает указанные файлы в <code>listNameFiles</code> в архив <code>nameArchive</code>.
-     * Если вместо входного файла указана директория,
-     * ее содержимое упаковывается рекурсивно
-     *
-     * @param nameArchive
-     * @param listNameFiles
-     * @return
-     */
-//    int packInArchive(String nameArchive, List<String> listNameFiles) throws IOException;
+    public int packInArchive(SettingsArchiver settings);
 
-    int packInArchive(String nameArchive, List<File> listNameFiles) throws IOException;
+    public int packInArchive(String nameArchive, List<File> listNameFiles);
 
-    /**
-     * упаковывает указанные файлы в <code>listNameFiles</code> в архив <code>nameArchive</code> с клмментариями.
-     *
-     * @param nameArchive
-     * @param listNameFiles
-     * @param comment
-     * @return
-     */
-//    int packInArchive(String nameArchive, List<String> listNameFiles, String comment) throws IOException;
+    public int packInArchive(String nameArchive, List<File> listNameFiles, String comment);
 
-    int packInArchive(String nameArchive, List<File> listNameFiles, String comment) throws IOException;
+    public int unpackArchive(SettingsArchiver settings);
 
-    /**
-     * распаковывает архив в указанную дирректорию
-     *
-     * @return
-     */
-    int unpackArchive(String nameArchive, String saveDirectory) throws IOException;
+    public int unpackArchive(String nameArchive, String saveDirectory);
 
-    void addFilesToArchive(File source, List<File> files) throws IOException;
+    public int addFilesToArchive(File source, List<File> files);
 
-    public String getArchiveComment(File zipFile) throws IOException;
+    public String getArchiveComment(File zipFile);
 
-    public void setArchiveComment(File zipFile, String comment) throws IOException;
-
+    public void setArchiveComment(File zipFile, String comment);
 }

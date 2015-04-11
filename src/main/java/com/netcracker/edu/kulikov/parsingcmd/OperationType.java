@@ -1,6 +1,5 @@
 package com.netcracker.edu.kulikov.parsingcmd;
 
-
 public enum OperationType {
     PACK,
     UNPACK,
