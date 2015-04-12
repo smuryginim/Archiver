@@ -5,6 +5,7 @@ import com.netcracker.edu.kulikov.exceptions.SettingsArchiverException;
 import com.netcracker.edu.kulikov.parsingcmd.CmdParserSettings;
 import com.netcracker.edu.kulikov.parsingcmd.OperationType;
 import com.netcracker.edu.kulikov.parsingcmd.SettingsArchiver;
+import com.netcracker.edu.kulikov.utils.ArchiverUtils;
 import org.apache.log4j.Logger;
 
 import java.io.*;
@@ -24,8 +25,6 @@ import java.util.zip.*;
 public class ZipArchiver implements Archiver {
 
     private static final Logger log = Logger.getLogger(ZipArchiver.class);
-
-    private static final int DEFAULT_BUFFER_SIZE = 8192;
 
     public ZipArchiver() {
     }
@@ -76,18 +75,10 @@ public class ZipArchiver implements Archiver {
 
             try (InputStream in = new BufferedInputStream(new FileInputStream(
                     new File(file.getParent().replace(File.separatorChar, '/'), nameFile)))) {
-                writeFromIsToOs(in, zos);
+                ArchiverUtils.writeFromIsToOs(in, zos);
             }
         }
         zos.closeEntry();
-    }
-
-    private void writeFromIsToOs(InputStream is, OutputStream os) throws IOException {
-        byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
-        int length;
-        while ((length = is.read(buffer)) > 0) {
-            os.write(buffer, 0, length);
-        }
     }
 
     private List<String> generateFileList(File node, String parent) throws IOException {
@@ -128,14 +119,14 @@ public class ZipArchiver implements Archiver {
 
         log.info("Start unpacking archive in directory: " + outputFolder);
         try (ZipInputStream zin = new ZipInputStream(new FileInputStream(nameArchive))) {
-            checkFolder(outputFolder);
+            ArchiverUtils.checkFolder(outputFolder);
             for (ZipEntry ze = zin.getNextEntry(); ze != null; ze = zin.getNextEntry()) {
                 File newFile = new File(outputFolder + File.separator + ze.getName());
 
                 //create all non exists folders
                 Files.createDirectories(new File(newFile.getParent()).toPath());
                 try (OutputStream fos = new FileOutputStream(newFile)) {
-                    writeFromIsToOs(zin, fos);
+                    ArchiverUtils.writeFromIsToOs(zin, fos);
                 }
                 numberFiles++;
             }
@@ -148,22 +139,13 @@ public class ZipArchiver implements Archiver {
         return numberFiles;
     }
 
-    private boolean checkFolder(String outputFolder) throws IOException {
-        File folder = new File(new File(outputFolder).getAbsolutePath());
-        if (!folder.exists()) {
-            Files.createDirectories(folder.toPath());
-            return true;
-        }
-        return false;
-    }
-
     @Override
     public int addFilesToArchive(File source, List<File> files) throws ArchiverException {
         log.info("Add files " + Arrays.toString(files.toArray()) + " to zip: " + source.getName());
         int numberFiles = 0;
         try {
             String comment = getArchiveComment(source);
-            File tmpZip = createTempZip(source);
+            File tmpZip = ArchiverUtils.createTempZip(source);
             try (ZipInputStream zin = new ZipInputStream(new FileInputStream(tmpZip));
                  ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(source))) {
 
@@ -172,7 +154,7 @@ public class ZipArchiver implements Archiver {
                     writeFileToZos(zos, fileAbsolutePath);
                     numberFiles++;
                 }
-                copyZipToZip(zin, zos);
+                ArchiverUtils.copyZipToZip(zin, zos);
 
                 zos.setComment(comment);
                 log.info("Done adds files to zip");
@@ -183,23 +165,6 @@ public class ZipArchiver implements Archiver {
             throw new ArchiverException(this, "Failed to add the files in archive: " + source.getName(), e);
         }
         return numberFiles;
-    }
-
-    private File createTempZip(File zipFile) throws IOException {
-        File tmpZip = File.createTempFile(zipFile.getName(), null);
-        Files.delete(tmpZip.toPath());
-        if (!zipFile.renameTo(tmpZip)) {
-            throw new IOException("Could not make temp file (" + zipFile.getName() + ")");
-        }
-        return tmpZip;
-    }
-
-    private void copyZipToZip(ZipInputStream zin, ZipOutputStream zos) throws IOException {
-        for (ZipEntry ze = zin.getNextEntry(); ze != null; ze = zin.getNextEntry()) {
-            zos.putNextEntry(ze);
-            writeFromIsToOs(zin, zos);
-            zos.closeEntry();
-        }
     }
 
     @Override
@@ -219,11 +184,11 @@ public class ZipArchiver implements Archiver {
     public void setArchiveComment(File zipFile, String comment) throws ArchiverException {
 
         try {
-            File tmpZip = createTempZip(zipFile);
+            File tmpZip = ArchiverUtils.createTempZip(zipFile);
             try (ZipInputStream zin = new ZipInputStream(new FileInputStream(tmpZip));
                  ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zipFile))) {
 
-                copyZipToZip(zin, zos);
+                ArchiverUtils.copyZipToZip(zin, zos);
                 zos.setComment(comment);
             }
             Files.delete(tmpZip.toPath());

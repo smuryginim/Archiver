@@ -15,7 +15,7 @@ public class ArchiverApp {
     public static void main(String[] args) {
 
 //        example:
-        String[] strings1 = new String[]{"-p", "src\\test\\resources\\settingsTest.zip", "-f", "src\\main\\resources\\dir1", "src\\main\\resources\\dir2", "-c", "archive's comment"};
+        String[] strings1 = new String[]{"-p", "src\\main\\resources\\dirir.zip", "-f", "src\\main\\resources\\dir1", "src\\main\\resources\\dir2", "-c", "archive's comment"};
         String[] strings2 = new String[]{"-u", "src\\main\\resources\\dirir.zip", "-d", "src\\main\\resources\\unpack_dir"};
         String[] strings3 = new String[]{"-a", "src\\main\\resources\\dirir.zip", "-f", "src\\main\\resources\\dir1_add", "src\\main\\resources\\dir2_add"};
         String[] strings4 = new String[]{"-r", "src\\main\\resources\\dirir.zip"};
@@ -27,7 +27,7 @@ public class ArchiverApp {
         SettingsArchiver settings = SettingsArchiver.getInstance();
         CmdParserSettings parser = new CmdParserSettings(settings);
         try {
-            settings = parser.getParsedSettings(strings1);
+            settings = parser.getParsedSettings(strings4);
             switch (parser.getType()) {
                 case PACK:
                     archiver.packInArchive(settings.getZipForPack(), settings.getListFiles(), settings.getComment());

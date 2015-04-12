@@ -4,7 +4,6 @@ import com.netcracker.edu.kulikov.exceptions.ArchiverException;
 import com.netcracker.edu.kulikov.parsingcmd.SettingsArchiver;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -24,7 +23,7 @@ public interface Archiver {
 
     public int unpackArchive(String nameArchive, String saveDirectory) throws ArchiverException;
 
-    public int addFilesToArchive(File source, List<File> files) throws ArchiverException, IOException;
+    public int addFilesToArchive(File source, List<File> files) throws ArchiverException;
 
     public String getArchiveComment(File zipFile) throws ArchiverException;
 

@@ -1,7 +1,7 @@
 package com.netcracker.edu.kulikov.parsingcmd;
 
+import com.netcracker.edu.kulikov.exceptions.SettingsArchiverException;
 import jdk.nashorn.internal.ir.annotations.Ignore;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.kohsuke.args4j.CmdLineException;
@@ -20,12 +20,6 @@ public class CmdParserSettingsTest {
     @Before
     public void setUp() throws Exception {
         parser = new CmdParserSettings();
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        parser = null;
-
     }
 
     @Test
@@ -122,5 +116,10 @@ public class CmdParserSettingsTest {
         parser.getParsedSettings(parameters);
     }
 
+    @Test(expected = SettingsArchiverException.class)
+    public void testSettingsIsNull() throws Exception {
+        parser.setSettings(null);
+        parser.getType();
+    }
 
 }
