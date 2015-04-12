@@ -5,7 +5,7 @@ import com.netcracker.edu.kulikov.archiver.Archiver;
 /**
  * @author Kulikov Kirill
  */
-public class ArchiverException extends RuntimeException {
+public class ArchiverException extends Exception {
 
     private Archiver archiver;
 

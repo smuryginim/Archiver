@@ -8,7 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * settings command line for archiver
+ * Settings command line for archiver.
+ *
  * This class handles the options command line represented as:
  * pack:           [-p, --pack]    <name_output_archive>   [-f] <names_input_file1, ...>     [-c] "<comments>"
  * unpack:         [-u, --unpack]  <name_archive>          [-d] <directory_for_unpacking>

@@ -31,7 +31,7 @@ public class ZipArchiver implements Archiver {
     }
 
     @Override
-    public int packInArchive(SettingsArchiver settings) {
+    public int packInArchive(SettingsArchiver settings) throws ArchiverException {
         CmdParserSettings parser = new CmdParserSettings(settings);
         if (parser.getType() != OperationType.PACK) {
             throw new SettingsArchiverException("Incorrect parameters for packing to the archive");
@@ -44,12 +44,12 @@ public class ZipArchiver implements Archiver {
     }
 
     @Override
-    public int packInArchive(String nameArchive, List<File> listNameFiles) {
+    public int packInArchive(String nameArchive, List<File> listNameFiles) throws ArchiverException {
         return packInArchive(nameArchive, listNameFiles, null);
     }
 
     @Override
-    public int packInArchive(String nameArchive, List<File> listNameFiles, String comment) {
+    public int packInArchive(String nameArchive, List<File> listNameFiles, String comment) throws ArchiverException {
         int numberFiles = 0;
 
         log.info("Start packing to archive. Output to zip archive: " + nameArchive);
@@ -78,8 +78,8 @@ public class ZipArchiver implements Archiver {
                     new File(file.getParent().replace(File.separatorChar, '/'), nameFile)))) {
                 writeFromIsToOs(in, zos);
             }
-            zos.closeEntry();
         }
+        zos.closeEntry();
     }
 
     private void writeFromIsToOs(InputStream is, OutputStream os) throws IOException {
@@ -114,7 +114,7 @@ public class ZipArchiver implements Archiver {
     }
 
     @Override
-    public int unpackArchive(SettingsArchiver settings) {
+    public int unpackArchive(SettingsArchiver settings) throws ArchiverException {
         CmdParserSettings parser = new CmdParserSettings(settings);
         if (parser.getType() != OperationType.UNPACK) {
             throw new SettingsArchiverException("Incorrect parameters for unpacking to the archive");
@@ -123,7 +123,7 @@ public class ZipArchiver implements Archiver {
     }
 
     @Override
-    public int unpackArchive(String nameArchive, String outputFolder) {
+    public int unpackArchive(String nameArchive, String outputFolder) throws ArchiverException {
         int numberFiles = 0;
 
         log.info("Start unpacking archive in directory: " + outputFolder);
@@ -158,10 +158,11 @@ public class ZipArchiver implements Archiver {
     }
 
     @Override
-    public int addFilesToArchive(File source, List<File> files) {
+    public int addFilesToArchive(File source, List<File> files) throws ArchiverException {
         log.info("Add files " + Arrays.toString(files.toArray()) + " to zip: " + source.getName());
         int numberFiles = 0;
         try {
+            String comment = getArchiveComment(source);
             File tmpZip = createTempZip(source);
             try (ZipInputStream zin = new ZipInputStream(new FileInputStream(tmpZip));
                  ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(source))) {
@@ -173,7 +174,6 @@ public class ZipArchiver implements Archiver {
                 }
                 copyZipToZip(zin, zos);
 
-                String comment = getArchiveComment(source);
                 zos.setComment(comment);
                 log.info("Done adds files to zip");
             }
@@ -203,7 +203,7 @@ public class ZipArchiver implements Archiver {
     }
 
     @Override
-    public String getArchiveComment(File zipFile) {
+    public String getArchiveComment(File zipFile) throws ArchiverException {
         String comment;
         try (ZipFile zf = new ZipFile(zipFile)) {
             comment = zf.getComment();
@@ -216,7 +216,7 @@ public class ZipArchiver implements Archiver {
     }
 
     @Override
-    public void setArchiveComment(File zipFile, String comment) {
+    public void setArchiveComment(File zipFile, String comment) throws ArchiverException {
 
         try {
             File tmpZip = createTempZip(zipFile);

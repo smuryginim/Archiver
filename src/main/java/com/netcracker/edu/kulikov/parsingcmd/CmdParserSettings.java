@@ -34,7 +34,7 @@ public class CmdParserSettings {
         return settings;
     }
 
-    public OperationType getType() {
+    public OperationType getType() throws SettingsArchiverException {
         if (settings == null) {
             throw new SettingsArchiverException("Incorrect settings command line. Settings should not be equal to null.");
         } else if (!settings.getZipForPack().equals("")) {
@@ -58,7 +58,7 @@ public class CmdParserSettings {
         }
     }
 
-    private void checkArchiveExistence(String archive) {
+    private void checkArchiveExistence(String archive) throws SettingsArchiverException {
         if (archive == null || archive.equals("")) {
             throw new SettingsArchiverException("Archive for this operation is not specified in the parameters");
         } else if (!new File(archive).exists()) {
@@ -66,7 +66,7 @@ public class CmdParserSettings {
         }
     }
 
-    private void checkFileExistence(List<File> files) {
+    private void checkFileExistence(List<File> files) throws SettingsArchiverException {
         for (File file : files) {
             if (!file.exists()) {
                 throw new SettingsArchiverException("File " + file.getName() + " is not exists!");
