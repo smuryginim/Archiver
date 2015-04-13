@@ -7,6 +7,9 @@ import org.kohsuke.args4j.CmdLineParser;
 import java.io.File;
 import java.util.List;
 
+/**
+ * @author Kulikov Kirill
+ */
 public class CmdParserSettings {
 
     private SettingsArchiver settings;

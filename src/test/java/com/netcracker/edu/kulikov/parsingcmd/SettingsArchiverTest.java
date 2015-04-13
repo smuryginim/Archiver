@@ -1,7 +1,6 @@
 package com.netcracker.edu.kulikov.parsingcmd;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
@@ -10,19 +9,16 @@ import static org.hamcrest.core.AllOf.allOf;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.IsInstanceOf.any;
+import static org.hamcrest.core.IsNot.not;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.hamcrest.core.IsSame.sameInstance;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
 public class SettingsArchiverTest {
 
-    private static SettingsArchiver settings;
+    private static SettingsArchiver settings = new SettingsArchiver();
     private CmdLineParser parser;
-
-    @BeforeClass
-    public static void setUpClass() throws Exception {
-        settings = SettingsArchiver.getInstance();
-    }
 
     @Before
     public void setUp() throws Exception {
@@ -31,7 +27,7 @@ public class SettingsArchiverTest {
 
     @Test
     public void testGetInstance() throws Exception {
-        assertThat(settings, is(allOf(sameInstance(SettingsArchiver.getInstance()), any(SettingsArchiver.class))));
+        assertThat(settings, is(allOf(not(sameInstance(new SettingsArchiver())), any(SettingsArchiver.class))));
     }
 
     @Test

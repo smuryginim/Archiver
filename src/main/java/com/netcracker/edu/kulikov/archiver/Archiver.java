@@ -7,8 +7,6 @@ import java.io.File;
 import java.util.List;
 
 /**
- * упаковки файлов в архив и распаковки их из архива
- *
  * @author Kulikov Kirill
  */
 public interface Archiver {
@@ -27,5 +25,5 @@ public interface Archiver {
 
     public String getArchiveComment(File zipFile) throws ArchiverException;
 
-    public void setArchiveComment(File zipFile, String comment) throws ArchiverException;
+    public String setArchiveComment(File zipFile, String comment) throws ArchiverException;
 }

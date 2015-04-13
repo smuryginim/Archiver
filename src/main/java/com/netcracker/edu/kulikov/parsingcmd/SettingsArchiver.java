@@ -21,8 +21,6 @@ import java.util.List;
  */
 public class SettingsArchiver {
 
-    private static SettingsArchiver instance;
-
     @Option(name = "-p", aliases = "--pack", usage = "name of the output archive",
             depends = {"-f"}, forbids = {"-u", "-d", "-a", "-w", "-r"})
     private String zipForPack = "";
@@ -55,15 +53,8 @@ public class SettingsArchiver {
             forbids = {"-u", "-d", "-a", "-r"})
     private String comment;
 
-    private SettingsArchiver() {
+    public SettingsArchiver() {
         listFiles = new ArrayList<>();
-    }
-
-    public static SettingsArchiver getInstance() {
-        if (instance == null) {
-            instance = new SettingsArchiver();
-        }
-        return instance;
     }
 
     public String getZipForPack() {

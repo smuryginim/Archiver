@@ -16,6 +16,7 @@ import static org.junit.Assert.assertThat;
 public class CmdParserSettingsTest {
 
     private CmdParserSettings parser;
+    private SettingsArchiver settings = new SettingsArchiver();
 
     @Before
     public void setUp() throws Exception {
@@ -24,7 +25,6 @@ public class CmdParserSettingsTest {
 
     @Test
     public void testSetGetSettings() throws Exception {
-        SettingsArchiver settings = SettingsArchiver.getInstance();
         parser.setSettings(settings);
         CmdParserSettings parserSettings = new CmdParserSettings(settings);
 
@@ -38,7 +38,6 @@ public class CmdParserSettingsTest {
     public void testGetTypePack() throws Exception {
         String[] parameters = new String[]{"-p", "src\\test\\resources\\cmdParserTest.zip", "-f", "src\\test\\resources\\dir1"};
 
-        SettingsArchiver settings = SettingsArchiver.getInstance();
         parser.setSettings(settings);
         parser.getParsedSettings(parameters);
 
@@ -52,7 +51,6 @@ public class CmdParserSettingsTest {
     public void testGetTypeUnpack() throws Exception {
         String[] parameters = new String[]{"-u", "src\\test\\resources\\cmdParserTest.zip", "-d", "src\\test\\resources\\unpack_dir"};
 
-        SettingsArchiver settings = SettingsArchiver.getInstance();
         parser.setSettings(settings);
         parser.getParsedSettings(parameters);
 
@@ -66,7 +64,6 @@ public class CmdParserSettingsTest {
     public void testGetTypeAddFiles() throws Exception {
         String[] parameters = new String[]{"-a", "src\\test\\resources\\cmdParserTest.zip", "-f", "src\\test\\resources\\dir1_add"};
 
-        SettingsArchiver settings = SettingsArchiver.getInstance();
         parser.setSettings(settings);
         parser.getParsedSettings(parameters);
 
@@ -80,7 +77,6 @@ public class CmdParserSettingsTest {
     public void testGetTypeReadComment() throws Exception {
         String[] parameters = new String[]{"-r", "src\\test\\resources\\cmdParserTest.zip"};
 
-        SettingsArchiver settings = SettingsArchiver.getInstance();
         parser.setSettings(settings);
         parser.getParsedSettings(parameters);
 
@@ -94,7 +90,6 @@ public class CmdParserSettingsTest {
     public void testGetTypeWriteComment() throws Exception {
         String[] parameters = new String[]{"-w", "src\\test\\resources\\cmdParserTest.zip", "-c", "new archive's comment"};
 
-        SettingsArchiver settings = SettingsArchiver.getInstance();
         parser.setSettings(settings);
         parser.getParsedSettings(parameters);
 

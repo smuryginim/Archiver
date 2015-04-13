@@ -1,5 +1,8 @@
 package com.netcracker.edu.kulikov.parsingcmd;
 
+/**
+ * @author Kulikov Kirill
+ */
 public enum OperationType {
     PACK,
     UNPACK,

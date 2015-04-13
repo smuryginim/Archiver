@@ -18,8 +18,6 @@ import java.util.List;
 import java.util.zip.*;
 
 /**
- * упаковки файлов в zip архив и распаковки их из архива
- *
  * @author Kulikov Kirill
  */
 public class ZipArchiver implements Archiver {
@@ -145,7 +143,7 @@ public class ZipArchiver implements Archiver {
         int numberFiles = 0;
         try {
             String comment = getArchiveComment(source);
-            File tmpZip = ArchiverUtils.createTempZip(source);
+            File tmpZip = ArchiverUtils.createTempFile(source);
             try (ZipInputStream zin = new ZipInputStream(new FileInputStream(tmpZip));
                  ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(source))) {
 
@@ -181,10 +179,10 @@ public class ZipArchiver implements Archiver {
     }
 
     @Override
-    public void setArchiveComment(File zipFile, String comment) throws ArchiverException {
+    public String setArchiveComment(File zipFile, String comment) throws ArchiverException {
 
         try {
-            File tmpZip = ArchiverUtils.createTempZip(zipFile);
+            File tmpZip = ArchiverUtils.createTempFile(zipFile);
             try (ZipInputStream zin = new ZipInputStream(new FileInputStream(tmpZip));
                  ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zipFile))) {
 
@@ -197,5 +195,7 @@ public class ZipArchiver implements Archiver {
             log.error("Failed to set the comment in archive: " + zipFile.getName(), e);
             throw new ArchiverException(this, "Failed to set the comment in archive: " + zipFile.getName(), e);
         }
+
+        return comment;
     }
 }

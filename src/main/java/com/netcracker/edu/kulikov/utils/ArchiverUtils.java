@@ -30,13 +30,13 @@ public class ArchiverUtils {
         return false;
     }
 
-    public static File createTempZip(File zipFile) throws IOException {
-        File tmpZip = File.createTempFile(zipFile.getName(), null);
-        Files.delete(tmpZip.toPath());
-        if (!zipFile.renameTo(tmpZip)) {
-            throw new IOException("Could not make temp file (" + zipFile.getName() + ")");
+    public static File createTempFile(File file) throws IOException {
+        File tempFile = File.createTempFile(file.getName(), null);
+        Files.delete(tempFile.toPath());
+        if (!file.renameTo(tempFile)) {
+            throw new IOException("Could not make temp file (" + file.getName() + ")");
         }
-        return tmpZip;
+        return tempFile;
     }
 
     public static void copyZipToZip(ZipInputStream zin, ZipOutputStream zos) throws IOException {
