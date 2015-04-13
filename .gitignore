@@ -1,7 +1,4 @@
 .idea/
 target/
 log*
-*.zip
-!/src/test/resources/
 *.iml
-/src/main/resources/unpack_dir
